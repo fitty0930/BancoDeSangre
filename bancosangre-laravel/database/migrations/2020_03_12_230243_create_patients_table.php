@@ -13,24 +13,22 @@ class CreatePatientsTable extends Migration
      */
     public function up()
     {
-        // Schema::enableForeignKeyConstraints();
-        Schema::create('patients', function (Blueprint $table) {
-            $table->increments('patient_id');
-            $table->primary('patient_id');
-            $table->integer('dni');
-            $table->text('name');
-            $table->text('surname');
-            $table->unsignedInteger('blood_id');
-            $table->foreign('blood_id')
-                ->references('blood_id')
-                ->on('blood')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->timestamps();
-        });
-
+    // Schema::enableForeignKeyConstraints();
+    Schema::create('patients', function (Blueprint $table) {
+    $table->increments('patient_id')->unsigned();
+    $table->integer('dni');
+    $table->text('name');
+    $table->text('surname');
+    $table->unsignedInteger('blood_id');
+    $table->foreign('blood_id')
+    ->references('blood_id')
+    ->on('blood')
+    ->onDelete('cascade')
+    ->onUpdate('cascade');
+    $table->timestamps();
+    });
     }
-    
+        
     /**
      * Reverse the migrations.
      *

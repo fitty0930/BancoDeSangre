@@ -12,15 +12,14 @@ class CreateBloodTable extends Migration
      * @return void
      */
     public function up()
-    {
+        {
         Schema::create('blood', function (Blueprint $table) {
-            $table->increments('blood_id')->unsignedInteger();
-            $table->primary('blood_id');
-            $table->text('group');
-            $table->text('factor');
-            $table->timestamps();
+        $table->increments('blood_id')->unsigned();
+        $table->char('group', 2);
+        $table->char('factor', 1);
+        $table->timestamps();
         });
-    }
+        }
 
     /**
      * Reverse the migrations.
