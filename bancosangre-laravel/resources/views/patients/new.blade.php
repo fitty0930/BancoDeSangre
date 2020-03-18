@@ -14,7 +14,8 @@
                     Nuevo Paciente
                 </div>
                 <div class="card-body">
-                    <form action="">
+                    <form action="{{route('patients.store')}}" method="POST">
+                    @csrf
                     <!-- dni, name, surname, blood_id (dropdown) -->
                         <div class="form-group">
                             <label for=""> DNI </label>

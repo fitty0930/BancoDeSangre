@@ -3,6 +3,8 @@
 // voy a usar PATIENTS
 // voy a usar BLOODjPEOPLE
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Patient;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route ::get('/', function(){
-    return 'Esta es la url raiz';
+    return redirect()->route('patients');
 });
 
 Route ::get('patients', function(){
@@ -30,3 +32,14 @@ Route ::get('patients', function(){
 Route ::get('patients/new', function(){
     return view('patients.new');
 })->name('patients.new');
+
+Route ::post('patients', function(Request $request){
+    $newPatient = new Patient;
+    $newPatient->dni = $request->input('dni');
+    $newPatient->name = $request->input('name');
+    $newPatient->surname = $request->input('surname');
+    $newPatient->blood_id = 5; // sobreescrito para probar
+    $newPatient->save();
+
+    return redirect()->route('patients');
+})->name('patients.store');
