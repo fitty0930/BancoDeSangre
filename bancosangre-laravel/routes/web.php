@@ -21,18 +21,23 @@ use App\Patient;
 //     return view('welcome');
 // });
 
+// RUTA DEFAULT
 Route ::get('/', function(){
     return redirect()->route('patients');
 });
 
+// MOSTRADO DE TODOS LOS PACIENTES
 Route ::get('patients', function(){
-    return view('patients.patients');
+    $patients = Patient::OrderBy('dni','asc')->get(); // trae ordenado por dni, el get es OBLIGATORIO
+    return view('patients.patients', compact('patients'));
 })->name('patients');
 
+// MOSTRADO DE FORMULARIO PARA CREAR PACIENTE
 Route ::get('patients/new', function(){
     return view('patients.new');
 })->name('patients.new');
 
+//CREADO DE PACIENTES
 Route ::post('patients', function(Request $request){
     $newPatient = new Patient;
     $newPatient->dni = $request->input('dni');
@@ -41,5 +46,13 @@ Route ::post('patients', function(Request $request){
     $newPatient->blood_id = 5; // sobreescrito para probar
     $newPatient->save();
 
-    return redirect()->route('patients');
+    return redirect()->route('patients')->with('info','Paciente agregado exitosamente');
 })->name('patients.store');
+
+// BORRADO DE PACIENTES
+Route ::delete('patients/{patient_id}', function($patient_id){
+    $patient = Patient::where('patient_id', $patient_id); // por alguna razon no me deja usar findorfail
+    $patient->delete();
+    
+    return redirect()->route('patients')->with('info','Paciente eliminado exitosamente');
+})->name('patients.delete');
