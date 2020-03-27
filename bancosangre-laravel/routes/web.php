@@ -17,10 +17,6 @@ use App\Patient;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 // RUTA DEFAULT
 Route ::get('/', function(){
     return redirect()->route('patients');
@@ -30,7 +26,7 @@ Route ::get('/', function(){
 Route ::get('patients', function(){
     $patients = Patient::OrderBy('dni','asc')->get(); // trae ordenado por dni, el get es OBLIGATORIO
     return view('patients.patients', compact('patients'));
-})->name('patients');
+})->name('patients'); // le da un nombre a la ruta
 
 // MOSTRADO DE FORMULARIO PARA CREAR PACIENTE
 Route ::get('patients/new', function(){
@@ -38,7 +34,7 @@ Route ::get('patients/new', function(){
 })->name('patients.new');
 
 //CREADO DE PACIENTES
-Route ::post('patients', function(Request $request){
+Route ::post('patients', function(Request $request){ // trae en un array toda la informacion del formulario
     $newPatient = new Patient;
     $newPatient->dni = $request->input('dni');
     $newPatient->name = $request->input('name');
@@ -47,12 +43,37 @@ Route ::post('patients', function(Request $request){
     $newPatient->save();
 
     return redirect()->route('patients')->with('info','Paciente agregado exitosamente');
+    // redirecciona, routea y manda un array de informacion
 })->name('patients.store');
 
 // BORRADO DE PACIENTES
 Route ::delete('patients/{patient_id}', function($patient_id){
-    $patient = Patient::where('patient_id', $patient_id); // por alguna razon no me deja usar findorfail
+    $patient = Patient::findOrFail($patient_id); // por alguna razon no me deja usar findorfail
     $patient->delete();
-    
+    // primero se busca y despues se ejecutan ordenes
+
     return redirect()->route('patients')->with('info','Paciente eliminado exitosamente');
+    // redirecciona, routea y manda un array de informacion
 })->name('patients.delete');
+
+
+// MOSTRADO DE FORMULARIO DE EDICION
+Route ::get('patients/{patient_id}/edit', function($patient_id){
+
+    $patient = Patient::findOrFail($patient_id);
+    // first retorna un solo obj , vendria a ser el equivalente al get()
+
+    return view('patients.edit', compact('patient'));// va entre comillas y sin $
+})->name('patients.edit');
+
+
+// EDITADO DE PRODUCTO
+Route::put('patients/{patient_id}', function(Request $request, $patient_id){
+    $patient = Patient::findOrFail($patient_id);
+    $patient->dni = $request->input('dni');
+    $patient->name = $request->input('name');
+    $patient->surname = $request->input('surname');
+    $patient->save();
+
+    return redirect()->route('patients')->with('info','Paciente editado exitosamente');
+})->name('patients.update');
