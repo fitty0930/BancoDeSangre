@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBloodTable extends Migration
+class CreateBloodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateBloodTable extends Migration
      */
     public function up()
         {
-        Schema::create('blood', function (Blueprint $table) {
+        Schema::create('bloods', function (Blueprint $table) {
         $table->increments('blood_id')->unsigned();
         $table->char('group', 2);
         $table->char('factor', 1);
@@ -28,6 +28,6 @@ class CreateBloodTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blood');
+        Schema::dropIfExists('bloods');
     }
 }

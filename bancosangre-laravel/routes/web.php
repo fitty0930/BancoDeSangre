@@ -5,7 +5,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Patient;
-
+use App\Blood;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +17,10 @@ use App\Patient;
 |
 */
 
+Route::middleware('auth')->group(function(){ // autenticacion
+
+});
+
 // RUTA DEFAULT
 Route ::get('/', function(){
     return redirect()->route('patients');
@@ -24,13 +28,18 @@ Route ::get('/', function(){
 
 // MOSTRADO DE TODOS LOS PACIENTES
 Route ::get('patients', function(){
-    $patients = Patient::OrderBy('dni','asc')->get(); // trae ordenado por dni, el get es OBLIGATORIO
+    $patients = Patient::join('bloods', 'patients.blood_id', '=', 'bloods.blood_id')
+                ->select('patients.*', 'bloods.group', 'bloods.factor')
+                ->OrderBy('dni','asc')
+                ->get();
+
     return view('patients.patients', compact('patients'));
 })->name('patients'); // le da un nombre a la ruta
 
 // MOSTRADO DE FORMULARIO PARA CREAR PACIENTE
 Route ::get('patients/new', function(){
-    return view('patients.new');
+    $bloods = Blood::get();
+    return view('patients.new', compact('bloods'));
 })->name('patients.new');
 
 //CREADO DE PACIENTES
@@ -39,7 +48,8 @@ Route ::post('patients', function(Request $request){ // trae en un array toda la
     $newPatient->dni = $request->input('dni');
     $newPatient->name = $request->input('name');
     $newPatient->surname = $request->input('surname');
-    $newPatient->blood_id = 5; // sobreescrito para probar
+    $newPatient->age = $request->input('age');
+    $newPatient->blood_id = $request->input('blood_id');; // sobreescrito para probar
     $newPatient->save();
 
     return redirect()->route('patients')->with('info','Paciente agregado exitosamente');
@@ -60,19 +70,27 @@ Route ::delete('patients/{patient_id}', function($patient_id){
 // MOSTRADO DE FORMULARIO DE EDICION
 Route ::get('patients/{patient_id}/edit', function($patient_id){
 
-    $patient = Patient::findOrFail($patient_id);
+    $patient =  Patient::join('bloods', 'patients.blood_id', '=', 'bloods.blood_id')
+                ->select('patients.*', 'bloods.group', 'bloods.factor')
+                ->OrderBy('dni','asc')
+                ->findOrFail($patient_id);
     // first retorna un solo obj , vendria a ser el equivalente al get()
-
-    return view('patients.edit', compact('patient'));// va entre comillas y sin $
+    $bloods = Blood::get();
+    return view('patients.edit', compact('patient'), compact('bloods'));// va entre comillas y sin $
 })->name('patients.edit');
 
 
 // EDITADO DE PRODUCTO
 Route::put('patients/{patient_id}', function(Request $request, $patient_id){
-    $patient = Patient::findOrFail($patient_id);
+
+    $patient =  Patient::join('bloods', 'patients.blood_id', '=', 'bloods.blood_id')
+                ->select('patients.*', 'bloods.group', 'bloods.factor')
+                ->OrderBy('dni','asc')
+                ->findOrFail($patient_id);
     $patient->dni = $request->input('dni');
     $patient->name = $request->input('name');
     $patient->surname = $request->input('surname');
+    $patient->age = $request->input('age');
     $patient->save();
 
     return redirect()->route('patients')->with('info','Paciente editado exitosamente');

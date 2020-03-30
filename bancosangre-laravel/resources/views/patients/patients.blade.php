@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Pacientes </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-</head>
-<body>
+@extends('layouts.main')
+@section('contenido')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -32,6 +25,15 @@
                             Apellido
                         </th>
                         <th>
+                            Edad
+                        </th>
+                        <th>
+                            Grupo
+                        </th>
+                        <th>
+                            Factor
+                        </th>
+                        <th>
                             Acción
                         </th>
                         {{-- completar --}}
@@ -49,6 +51,15 @@
                                 {{$patient->surname}}
                             </td>
                             <td>
+                                {{$patient->age}}
+                            </td>
+                            <td>
+                                {{$patient->group}}
+                            </td>
+                            <td>
+                                {{$patient->factor}}
+                            </td>
+                            <td>
                             <a href="{{route('patients.edit', $patient->patient_id)}}" class="btn btn-warning btn-sm"> Editar</a>
                                 <a href="javascript: document.getElementById('delete-{{$patient->patient_id}}').submit()" class="btn btn-danger btn-sm">Eliminar</a>
                                 <form id="delete-{{ $patient->patient_id }}" action="{{ route('patients.delete', $patient->patient_id) }}" method="POST">
@@ -64,5 +75,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+@endsection

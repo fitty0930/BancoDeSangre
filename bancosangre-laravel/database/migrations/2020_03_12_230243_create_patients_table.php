@@ -19,10 +19,11 @@ class CreatePatientsTable extends Migration
     $table->integer('dni');
     $table->text('name');
     $table->text('surname');
+    $table->integer('age');
     $table->unsignedInteger('blood_id');
     $table->foreign('blood_id')
     ->references('blood_id')
-    ->on('blood')
+    ->on('bloods')
     ->onDelete('cascade')
     ->onUpdate('cascade');
     $table->timestamps();
