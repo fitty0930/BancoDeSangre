@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>{{$nombrePagina ?? ''}}</title>
     {{-- ACA DEBERIA PASAR UNA VARIABLE CON EL NOMBRE DE LA PAGINA --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
@@ -17,12 +17,12 @@
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href=""> Algo <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+              <a class="nav-link" href="{{route('patients')}}"> Pacientes </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <a class="nav-link" href="{{route('bloodtypes')}}"> Sangre </a>
             </li>
 
             <li class="nav-item dropdown">
@@ -37,10 +37,6 @@
               </div>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-
           </ul>
           {{-- BUSCADOR --}}
           <form class="form-inline my-2 my-lg-0">
@@ -50,6 +46,7 @@
         </div>
     </nav>
 
+    {{-- @extends($dropdown) --}}
     @yield('contenido')
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

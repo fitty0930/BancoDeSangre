@@ -28,8 +28,8 @@
                             <div class="input-group">
                                 <select class="custom-select" name="blood_id" id="blood_id">
                                     <option selected value="{{$patient->blood_id}}" > {{$patient->factor}} {{$patient->group}} </option>
-                                    @foreach($bloods as $blood)
-                                    <option value="{{$blood->blood_id}}">{{$blood->group}}{{$blood->factor}}</option>
+                                    @foreach($bloodtypes as $bloodtype)
+                                    <option value="{{$bloodtype->blood_id}}">{{$bloodtype->group}}{{$bloodtype->factor}}</option>
                                     @endforeach
                                 </select>
                             </div>

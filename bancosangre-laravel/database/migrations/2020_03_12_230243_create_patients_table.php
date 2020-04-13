@@ -23,7 +23,7 @@ class CreatePatientsTable extends Migration
     $table->unsignedInteger('blood_id');
     $table->foreign('blood_id')
     ->references('blood_id')
-    ->on('bloods')
+    ->on('bloodtypes')
     ->onDelete('cascade')
     ->onUpdate('cascade');
     $table->timestamps();

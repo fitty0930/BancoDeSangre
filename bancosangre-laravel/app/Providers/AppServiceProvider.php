@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // $dropdown = 'hola';
+        // View::share('dropdown', $dropdown);
         //
     }
 }
