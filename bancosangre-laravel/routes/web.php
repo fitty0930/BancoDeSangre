@@ -102,6 +102,18 @@ Route::put('patients/{patient_id}', function(Request $request, $patient_id){
     return redirect()->route('patients')->with('info','Paciente editado exitosamente');
 })->name('patients.update');
 
+// DETALLES DE UN SOLO PACIENTE
+Route::get('patients/{patient_id}', function($patient_id){
+    
+    $patient =  Patient::join('bloodtypes', 'patients.blood_id', '=', 'bloodtypes.blood_id')
+                ->select('patients.*', 'bloodtypes.group', 'bloodtypes.factor')
+                ->OrderBy('dni','asc')
+                ->findOrFail($patient_id);
+    $nombrePagina= $patient->name." ".$patient->surname;
+
+    return view('patients.details', compact('patient','nombrePagina'));
+})->name('patients.details');
+
 // route('bloods')
 Route::get('bloodtypes',function(){
     $nombrePagina = 'Tipos de Sangre';

@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary"> Guardar </button>
-                        <a href="{{route('patients')}}" class="btn btn-danger"> Cancelar </a>
+                        <a href="{{url()->previous()}}" class="btn btn-danger"> Cancelar </a>
                     </form>
                 </div>
             </div>
