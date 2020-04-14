@@ -36,7 +36,6 @@
                         <th>
                             Acción
                         </th>
-                        {{-- completar --}}
                     </thead>
                     <tbody>
                         @foreach($patients as $patient)

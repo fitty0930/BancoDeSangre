@@ -91,6 +91,7 @@ Route::put('patients/{patient_id}', function(Request $request, $patient_id){
                 ->select('patients.*', 'bloodtypes.group', 'bloodtypes.factor')
                 ->OrderBy('dni','asc')
                 ->findOrFail($patient_id);
+
     $patient->dni = $request->input('dni');
     $patient->name = $request->input('name');
     $patient->surname = $request->input('surname');
@@ -141,11 +142,11 @@ Route::get('bloodtypes/{blood_id}/compatibility', function($blood_id){
 
     // FALLA
     $patients = Patient::join('bloodtypes', 'patients.blood_id', '=', 'bloodtypes.blood_id')
-                ->select('patients.*', 'bloodtypes.group', 'bloodtypes.factor')
+                ->select('patients.*', 'bloodtypes.*')
                 ->OrderBy('dni','asc')
-                ->findOrFail($blood_id);
-    // FALLA
-
+                ->where('patients.blood_id', $blood_id) // hay que especificar sino se rompe
+                ->get();
+                
     return view('bloodtypes.compatiblepatients', compact('patients','nombrePagina'));
 })->name('bloodtypes.compatiblepatients');
 
