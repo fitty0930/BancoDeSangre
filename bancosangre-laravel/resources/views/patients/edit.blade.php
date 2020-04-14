@@ -27,7 +27,7 @@
                             <label for="">Elija un tipo y factor </label>
                             <div class="input-group">
                                 <select class="custom-select" name="blood_id" id="blood_id">
-                                    <option selected value="{{$patient->blood_id}}" > {{$patient->factor}} {{$patient->group}} </option>
+                                    <option selected value="{{$patient->blood_id}}" > {{$patient->group}} {{$patient->factor}}  </option>
                                     @foreach($bloodtypes as $bloodtype)
                                     <option value="{{$bloodtype->blood_id}}">{{$bloodtype->group}}{{$bloodtype->factor}}</option>
                                     @endforeach

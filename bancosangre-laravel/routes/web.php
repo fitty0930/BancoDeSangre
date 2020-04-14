@@ -36,18 +36,17 @@ Route ::get('patients', function(){
                 ->OrderBy('dni','asc')
                 ->get();
 
-    return view('patients.patients', compact('patients'), compact('nombrePagina'));
+    return view('patients.patients', compact('patients','nombrePagina'));
 })->name('patients'); // le da un nombre a la ruta
 
 // MOSTRADO DE FORMULARIO PARA CREAR PACIENTE
 Route ::get('patients/new', function(){
     $nombrePagina= 'Nuevo Paciente';
-    $bloodtypes = Bloodtype::get();// eventualmente se borrara
-    return view('patients.new', compact('bloodtypes'), compact('nombrePagina'));
+    
+    return view('patients.new', compact('nombrePagina'));
 })->name('patients.new');
 
 //CREADO DE PACIENTES
-// esto tiene problemas
 Route ::post('patients', function(Request $request){ // trae en un array toda la informacion del formulario
     $newPatient = new Patient;
     $newPatient->dni = $request->input('dni');
@@ -80,9 +79,8 @@ Route ::get('patients/{patient_id}/edit', function($patient_id){
                 ->OrderBy('dni','asc')
                 ->findOrFail($patient_id);
     // first retorna un solo obj , vendria a ser el equivalente al get()
-    $bloodtypes = Bloodtype::get();
-    
-    return view('patients.edit', compact('patient'), compact('bloodtypes'));// va entre comillas y sin $
+
+    return view('patients.edit', compact('patient','nombrePagina'));// va entre comillas y sin $
 })->name('patients.edit');
 
 
@@ -97,6 +95,7 @@ Route::put('patients/{patient_id}', function(Request $request, $patient_id){
     $patient->name = $request->input('name');
     $patient->surname = $request->input('surname');
     $patient->age = $request->input('age');
+    $patient->blood_id = $request->input('blood_id');
     $patient->save();
 
     return redirect()->route('patients')->with('info','Paciente editado exitosamente');
@@ -104,9 +103,8 @@ Route::put('patients/{patient_id}', function(Request $request, $patient_id){
 
 // route('bloods')
 Route::get('bloodtypes',function(){
-    $nombrePagina = 'Sangre';
-    $bloodtypes = Bloodtype::get();
-    return view('bloodtypes.bloodtypes', compact('bloodtypes'),compact('nombrePagina'));
+    $nombrePagina = 'Tipos de Sangre';
+    return view('bloodtypes.bloodtypes', compact('nombrePagina'));
 })->name('bloodtypes');
 
 // MOSTRADO DE FORMULARIO PARA CREAR TIPO DE SANGRE
@@ -135,3 +133,25 @@ Route ::delete('bloodtypes/{blood_id}', function($blood_id){
     return redirect()->route('bloodtypes')->with('info','Tipo de sangre eliminado exitosamente');
     // redirecciona, routea y manda un array de informacion
 })->name('bloodtypes.delete');
+
+// FILTRADO DE PACIENTES POR TIPO DE SANGRE (COMPATIBILIDAD)
+
+Route::get('bloodtypes/{blood_id}/compatibility', function($blood_id){
+    $nombrePagina= 'Pacientes compatibles';
+
+    // FALLA
+    $patients = Patient::join('bloodtypes', 'patients.blood_id', '=', 'bloodtypes.blood_id')
+                ->select('patients.*', 'bloodtypes.group', 'bloodtypes.factor')
+                ->OrderBy('dni','asc')
+                ->findOrFail($blood_id);
+    // FALLA
+
+    return view('bloodtypes.compatiblepatients', compact('patients','nombrePagina'));
+})->name('bloodtypes.compatiblepatients');
+
+// VIEW COMPOSER
+// SIRVE PARA PASAR INFORMACION A TODAS LAS VISTAS
+View::composer(['*'], function ($view) {
+    $bloodtypes = Bloodtype::get();
+    $view->with('bloodtypes', $bloodtypes);
+});
