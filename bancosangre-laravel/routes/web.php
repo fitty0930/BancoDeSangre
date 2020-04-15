@@ -20,8 +20,14 @@ use App\Bloodtype;
 */
 
 Route::middleware('auth')->group(function(){ // autenticacion
-
+    // route('bloods')
+    Route::get('bloodtypes',function(){
+        $nombrePagina = 'Tipos de Sangre';
+        return view('bloodtypes.bloodtypes', compact('nombrePagina'));
+    })->name('bloodtypes');
 });
+
+
 
 // RUTA DEFAULT
 Route ::get('/', function(){
@@ -114,11 +120,7 @@ Route::get('patients/{patient_id}', function($patient_id){
     return view('patients.details', compact('patient','nombrePagina'));
 })->name('patients.details');
 
-// route('bloods')
-Route::get('bloodtypes',function(){
-    $nombrePagina = 'Tipos de Sangre';
-    return view('bloodtypes.bloodtypes', compact('nombrePagina'));
-})->name('bloodtypes');
+
 
 // MOSTRADO DE FORMULARIO PARA CREAR TIPO DE SANGRE
 Route ::get('bloodtypes/new', function(){
@@ -168,3 +170,7 @@ View::composer(['*'], function ($view) {
     $bloodtypes = Bloodtype::get();
     $view->with('bloodtypes', $bloodtypes);
 });
+
+Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');
