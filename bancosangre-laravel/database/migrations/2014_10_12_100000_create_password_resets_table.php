@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBloodTable extends Migration
+class CreatePasswordResetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,13 @@ class CreateBloodTable extends Migration
      * @return void
      */
     public function up()
-        {
-        Schema::create('blood', function (Blueprint $table) {
-        $table->increments('blood_id')->unsigned();
-        $table->char('group', 2);
-        $table->char('factor', 1);
-        $table->timestamps();
+    {
+        Schema::create('password_resets', function (Blueprint $table) {
+            $table->string('email')->index();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
         });
-        }
+    }
 
     /**
      * Reverse the migrations.
@@ -28,6 +27,6 @@ class CreateBloodTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blood');
+        Schema::dropIfExists('password_resets');
     }
 }

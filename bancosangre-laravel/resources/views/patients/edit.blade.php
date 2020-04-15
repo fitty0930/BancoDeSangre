@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Editar Paciente </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-</head>
-<body>
+@extends('layouts.main')
+@section('contenido')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -28,14 +21,24 @@
                             <label for="">Apellido</label>
                             <input type="text" value="{{$patient->surname}}" class="form-control" name="surname">
 
+                            <label for="">Edad</label>
+                            <input type="number" value="{{$patient->age}}" class="form-control" name="age">
                             <!-- agregar dropdown sangre  -->
+                            <label for="">Elija un tipo y factor </label>
+                            <div class="input-group">
+                                <select class="custom-select" name="blood_id" id="blood_id">
+                                    <option selected value="{{$patient->blood_id}}" > {{$patient->group}} {{$patient->factor}}  </option>
+                                    @foreach($bloodtypes as $bloodtype)
+                                    <option value="{{$bloodtype->blood_id}}">{{$bloodtype->group}}{{$bloodtype->factor}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary"> Guardar </button>
-                    <a href="{{route('patients')}}" class="btn btn-danger"> Cancelar </a>
+                    <a href="{{url()->previous()}}" class="btn btn-danger"> Cancelar </a>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+@endsection

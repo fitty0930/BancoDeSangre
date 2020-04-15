@@ -38,7 +38,6 @@
                         <th>
                             Acciones disponibles
                         </th>
-                        {{-- completar --}}
                     </thead>
                     <tbody>
                         @foreach($patients as $patient)
@@ -64,7 +63,7 @@
                             <td>
                             <a href="{{route('patients.details', $patient->patient_id)}}" class="btn btn-info btn-sm"> Detalles </a>
                             <a href="{{route('patients.edit', $patient->patient_id)}}" class="btn btn-warning btn-sm"> Editar</a>
-                            <a href="javascript: document.getElementById('delete-{{$patient->patient_id}}').submit()" class="btn btn-danger btn-sm">Eliminar</a>
+                                <a href="javascript: document.getElementById('delete-{{$patient->patient_id}}').submit()" class="btn btn-danger btn-sm">Eliminar</a>
                                 <form id="delete-{{ $patient->patient_id }}" action="{{ route('patients.delete', $patient->patient_id) }}" method="POST">
                                     @method('delete')
                                     @csrf 
