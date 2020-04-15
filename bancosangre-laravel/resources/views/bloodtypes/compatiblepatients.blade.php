@@ -5,7 +5,9 @@
             <div class="col-md-12">
                 <div class="card-header">
                     Pacientes
+                    @auth
                     <a href="{{route('patients.new')}}" class="btn btn-success btn-sm float-right"> Nuevo paciente </a>
+                    @endauth
                 </div>
                 <div class="card-body">
                     @if(session('info'))
@@ -34,7 +36,7 @@
                             Factor
                         </th>
                         <th>
-                            Acción
+                            Acciones disponibles
                         </th>
                     </thead>
                     <tbody>

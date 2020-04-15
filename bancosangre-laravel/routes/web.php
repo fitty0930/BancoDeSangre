@@ -25,6 +25,45 @@ Route::middleware('auth')->group(function(){ // autenticacion
         $nombrePagina = 'Tipos de Sangre';
         return view('bloodtypes.bloodtypes', compact('nombrePagina'));
     })->name('bloodtypes');
+    
+    // MOSTRADO DE FORMULARIO PARA CREAR PACIENTE
+    Route ::get('patients/new', function(){
+    $nombrePagina= 'Nuevo Paciente';
+    
+    return view('patients.new', compact('nombrePagina'));
+    })->name('patients.new');
+
+    //CREADO DE PACIENTES
+    Route ::post('patients', function(Request $request){ // trae en un array toda la informacion del formulario
+    $newPatient = new Patient;
+    $newPatient->dni = $request->input('dni');
+    $newPatient->name = $request->input('name');
+    $newPatient->surname = $request->input('surname');
+    $newPatient->age = $request->input('age');
+    $newPatient->blood_id = $request->input('blood_id');; // sobreescrito para probar
+    $newPatient->save();
+
+    return redirect()->route('patients')->with('info','Paciente agregado exitosamente');
+    // redirecciona, routea y manda un array de informacion
+    })->name('patients.store');
+
+    // MOSTRADO DE FORMULARIO PARA CREAR TIPO DE SANGRE
+    Route ::get('bloodtypes/new', function(){
+    $nombrePagina= 'Nuevo tipo de sangre';
+    return view('bloodtypes.new', compact('nombrePagina'));
+    })->name('bloodtypes.new');
+
+    //CREADO DE TIPO DE SANGRE
+    Route ::post('bloodtypes', function(Request $request){ // trae en un array toda la informacion del formulario
+    $newBlood = new Bloodtype;
+    $newBlood->group = $request->input('group');
+    $newBlood->factor = $request->input('factor');
+    $newBlood->save();
+
+    return redirect()->route('bloodtypes')->with('info','Tipo de sangre agregado exitosamente');
+    // redirecciona, routea y manda un array de informacion
+    })->name('bloodtypes.store');
+    
 });
 
 
@@ -45,26 +84,6 @@ Route ::get('patients', function(){
     return view('patients.patients', compact('patients','nombrePagina'));
 })->name('patients'); // le da un nombre a la ruta
 
-// MOSTRADO DE FORMULARIO PARA CREAR PACIENTE
-Route ::get('patients/new', function(){
-    $nombrePagina= 'Nuevo Paciente';
-    
-    return view('patients.new', compact('nombrePagina'));
-})->name('patients.new');
-
-//CREADO DE PACIENTES
-Route ::post('patients', function(Request $request){ // trae en un array toda la informacion del formulario
-    $newPatient = new Patient;
-    $newPatient->dni = $request->input('dni');
-    $newPatient->name = $request->input('name');
-    $newPatient->surname = $request->input('surname');
-    $newPatient->age = $request->input('age');
-    $newPatient->blood_id = $request->input('blood_id');; // sobreescrito para probar
-    $newPatient->save();
-
-    return redirect()->route('patients')->with('info','Paciente agregado exitosamente');
-    // redirecciona, routea y manda un array de informacion
-})->name('patients.store');
 
 // BORRADO DE PACIENTES
 Route ::delete('patients/{patient_id}', function($patient_id){
@@ -119,25 +138,6 @@ Route::get('patients/{patient_id}', function($patient_id){
 
     return view('patients.details', compact('patient','nombrePagina'));
 })->name('patients.details');
-
-
-
-// MOSTRADO DE FORMULARIO PARA CREAR TIPO DE SANGRE
-Route ::get('bloodtypes/new', function(){
-    $nombrePagina= 'Nuevo tipo de sangre';
-    return view('bloodtypes.new', compact('nombrePagina'));
-})->name('bloodtypes.new');
-
-//CREADO DE TIPO DE SANGRE
-Route ::post('bloodtypes', function(Request $request){ // trae en un array toda la informacion del formulario
-    $newBlood = new Bloodtype;
-    $newBlood->group = $request->input('group');
-    $newBlood->factor = $request->input('factor');
-    $newBlood->save();
-
-    return redirect()->route('bloodtypes')->with('info','Tipo de sangre agregado exitosamente');
-    // redirecciona, routea y manda un array de informacion
-})->name('bloodtypes.store');
 
 // BORRADO DE TIPO DE SANGRE
 Route ::delete('bloodtypes/{blood_id}', function($blood_id){
