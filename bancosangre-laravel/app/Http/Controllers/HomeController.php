@@ -16,13 +16,15 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(Request $request){
+        $request->user()->authorizeRoles(['user', 'admin']); 
+        return view('home');
+    }
+
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        return view('home');
-    }
+
 }

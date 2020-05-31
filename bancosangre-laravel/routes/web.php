@@ -47,14 +47,23 @@ Route::middleware('auth')->group(function(){ // autenticacion
     // redirecciona, routea y manda un array de informacion
     })->name('patients.store');
 
-    // MOSTRADO DE FORMULARIO PARA CREAR TIPO DE SANGRE
-    Route ::get('bloodtypes/new', function(){
+    
+});
+
+// ESTO ES SOLO UN EJEMPLO
+Route::put('post/{id}', function ($id) {
+    
+})->middleware('auth', 'role:admin');
+// ESTO ES SOLO UN EJEMPLO
+
+// MOSTRADO DE FORMULARIO PARA CREAR TIPO DE SANGRE
+Route ::get('bloodtypes/new', function(){
     $nombrePagina= 'Nuevo tipo de sangre';
     return view('bloodtypes.new', compact('nombrePagina'));
-    })->name('bloodtypes.new');
+})->middleware('auth', 'role:admin')->name('bloodtypes.new');
 
-    //CREADO DE TIPO DE SANGRE
-    Route ::post('bloodtypes', function(Request $request){ // trae en un array toda la informacion del formulario
+//CREADO DE TIPO DE SANGRE
+Route ::post('bloodtypes', function(Request $request){ // trae en un array toda la informacion del formulario
     $newBlood = new Bloodtype;
     $newBlood->group = $request->input('group');
     $newBlood->factor = $request->input('factor');
@@ -62,11 +71,13 @@ Route::middleware('auth')->group(function(){ // autenticacion
 
     return redirect()->route('bloodtypes')->with('info','Tipo de sangre agregado exitosamente');
     // redirecciona, routea y manda un array de informacion
-    })->name('bloodtypes.store');
-    
-});
+})->middleware('auth', 'role:admin')->name('bloodtypes.store');
 
-
+// RUTA DE ERROR
+Route ::get('error', function(){
+    $nombrePagina= 'Error';
+    return view('error.error', compact('nombrePagina'));;
+})->name('error');;
 
 // RUTA DEFAULT
 Route ::get('/', function(){
