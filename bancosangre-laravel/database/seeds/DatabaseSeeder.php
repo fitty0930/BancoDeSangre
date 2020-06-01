@@ -1,6 +1,7 @@
 <?php
 
 use App\Role; // NO ENCUENTRA ESTO
+use App\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

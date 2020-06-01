@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Patient;
 use App\Bloodtype;
+use App\User;
+use App\Role;
+use App\Role_user;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +22,30 @@ use App\Bloodtype;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// MOSTRAR ROLES
+Route ::get('roles', function(){
+    $nombrePagina="roles";
+    $users = User::join('role_user', 'users.id', '=', 'role_user.user_id')
+                ->select('users.*', 'role_user.*')
+                // ->OrderBy('dni','asc')
+                ->get();
+
+    return view('roles.allroles', compact('users','nombrePagina'));
+})->middleware('auth', 'role:admin')->name('roles');
+
+// EDITADO DE ROL
+Route::get('roles/{id}', function($id){
+    $role_user =  Role_user::select('role_user.*')->where('role_user.user_id', $id)->first();
+    if($role_user->role_id==1){
+        $role_user->role_id= 2;
+        $role_user->save();
+    }else if($role_user->role_id==2){
+        $role_user->role_id= 1;
+        $role_user->save();
+    }
+    return redirect()->route('roles');
+})->middleware('auth', 'role:admin')->name('roles.change');
 
 Route::middleware('auth')->group(function(){ // autenticacion
     // route('bloods')
@@ -49,12 +77,6 @@ Route::middleware('auth')->group(function(){ // autenticacion
 
     
 });
-
-// ESTO ES SOLO UN EJEMPLO
-Route::put('post/{id}', function ($id) {
-    
-})->middleware('auth', 'role:admin');
-// ESTO ES SOLO UN EJEMPLO
 
 // MOSTRADO DE FORMULARIO PARA CREAR TIPO DE SANGRE
 Route ::get('bloodtypes/new', function(){
@@ -161,11 +183,9 @@ Route ::delete('bloodtypes/{blood_id}', function($blood_id){
 })->name('bloodtypes.delete');
 
 // FILTRADO DE PACIENTES POR TIPO DE SANGRE (COMPATIBILIDAD)
-
 Route::get('bloodtypes/{blood_id}/compatibility', function($blood_id){
     $nombrePagina= 'Pacientes compatibles';
 
-    // FALLA
     $patients = Patient::join('bloodtypes', 'patients.blood_id', '=', 'bloodtypes.blood_id')
                 ->select('patients.*', 'bloodtypes.*')
                 ->OrderBy('dni','asc')
