@@ -24,6 +24,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{{route('bloodtypes')}}"> Sangre </a>
             </li>
+              @if(Auth::user()->hasRole('admin'))
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{route('roles')}}"> Roles de usuarios </a>
+                  </li>
+              @endif
             @endauth
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
