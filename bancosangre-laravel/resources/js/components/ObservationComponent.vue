@@ -1,38 +1,56 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <getobservation-component 
-                v-for="observation in observations"
-                :key="observation.id"
-                :observation="observation"
-                >
-                </getobservation-component>
-                    <br>
-                <comment-component @new="addObservation">  </comment-component> 
-            </div>
+    <div>
+        <div class="card card-header">
+            <h2> observaciones </h2>
+        </div>
+        
+        <div class="card card-body" v-for="observation in observations" v-bind:key="observation.id">
+            <h4> {{observation.name}}</h4>
+            <p> {{observation.content}}</p>
+            <button @click="deleteObservation(observation.id)"> Borrar </button>
         </div>
     </div>
 </template>
 
 <script>
-    export default {
+    export default{
         data(){
-            return  {
-                observations: [{'id':1,
-                'patient_id':1,
-                 'name': 'martin',
-                 'content':'omelette du frommage'}]
+            return{
+                observations:[],
+                observation:{
+                    id:'',
+                    name:'',
+                    content:''
+
+                }
             }
         },
 
-        mounted() {
-            console.log('Component mounted.')
+        created(){
+            this.fetchObservations();
         },
 
         methods:{
-            addObservation(observation){
-                this.observations.push(observation);
+            fetchObservations(){
+                fetch('api/observations')
+                .then(res=> res.json())
+                .then(data=>{
+                    this.observations= data;
+                    console.log(data);
+                });
+            },
+
+            deleteObservation(id){
+                if(confirm('¿Estas Seguro?')){
+                    fetch('api/observations/${id}',{
+                        method:'DELETE'
+                    })
+                    .then(res=> res.json())
+                    .then(data=>{
+                        this.fetchObservations();
+                    })
+                    .catch(err=> console.log(err));
+                }
             }
         }
     }

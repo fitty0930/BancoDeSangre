@@ -40,10 +40,12 @@ class ObservationController extends Controller
     {
         //
         $observation = new Observation();
-        $observation->name = $request->name;
+        $observation->name = auth()->name();
         $observation->content = $request->content;
 
         $observation->save();
+
+        return $observation; // borrar esto despues
     }
 
     /**
@@ -99,10 +101,12 @@ class ObservationController extends Controller
      * @param  \App\Observation  $observation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         //
-        $observation = Observation::destroy($request->id);
-        return $observation;
+        $observation = Observation::findOrFail($id);
+        if($article){
+            $article->delete();
+        }   
     }
 }

@@ -20,8 +20,6 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('observation-component', require('./components/ObservationComponent.vue').default);
-Vue.component('getobservation-component', require('./components/GetObservationComponent.vue').default);
-Vue.component('comment-component', require('./components/CommentComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

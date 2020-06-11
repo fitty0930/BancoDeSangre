@@ -23,6 +23,9 @@ use App\Role_user;
 |
 */
 
+// Route::apiResource('observations', 'ObservationController');
+
+
 // MOSTRAR ROLES
 Route ::get('roles', function(){
     $nombrePagina="roles";
