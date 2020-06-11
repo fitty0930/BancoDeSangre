@@ -20,5 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('observations', 'ObservationController@index');
 
+Route::post('observations', 'ObservationController@store');
+
 Route::delete('observations/{id}', 'ObservationController@destroy');
 

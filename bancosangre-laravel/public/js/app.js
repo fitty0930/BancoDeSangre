@@ -1922,6 +1922,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1951,8 +1962,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       if (confirm('¿Estas Seguro?')) {
-        fetch('api/observations/${id}', {
-          method: 'DELETE'
+        fetch('api/observations/' + id, {
+          method: 'delete'
         }).then(function (res) {
           return res.json();
         }).then(function (data) {
@@ -1961,6 +1972,24 @@ __webpack_require__.r(__webpack_exports__);
           return console.log(err);
         });
       }
+    },
+    addObservation: function addObservation() {
+      var _this3 = this;
+
+      fetch('api/observations', {
+        method: 'post',
+        body: JSON.stringify(this.article),
+        headers: {
+          'content-type': 'application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this3.observation.content = '';
+        alert("agregado");
+      })["catch"](function (err) {
+        return console.log(err);
+      });
     }
   }
 });
@@ -37537,7 +37566,50 @@ var render = function() {
             )
           ]
         )
-      })
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "card card-footer" }, [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.addObservation($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "form-group" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.observation.content,
+                    expression: "observation.content"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "algun texto" },
+                domProps: { value: _vm.observation.content },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.observation, "content", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("button", { attrs: { type: "submit" } }, [
+              _vm._v(" Agregar observacion ")
+            ])
+          ]
+        )
+      ])
     ],
     2
   )

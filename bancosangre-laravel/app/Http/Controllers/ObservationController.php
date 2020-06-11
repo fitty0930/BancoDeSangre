@@ -105,8 +105,7 @@ class ObservationController extends Controller
     {
         //
         $observation = Observation::findOrFail($id);
-        if($article){
-            $article->delete();
-        }   
+        $observation->delete();
+        
     }
 }

@@ -9,6 +9,17 @@
             <p> {{observation.content}}</p>
             <button @click="deleteObservation(observation.id)"> Borrar </button>
         </div>
+        <!-- FORMULARIO PARA AGREGAR OBSERVACION -->
+        <div class="card card-footer">
+            <form @submit.prevent="addObservation">
+                <div class="form-group">
+                    <textarea type="text" class="form-control" placeholder="algun texto" v-model="observation.content">
+
+                    </textarea>
+                </div>
+                <button type="submit"> Agregar observacion </button>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -42,8 +53,8 @@
 
             deleteObservation(id){
                 if(confirm('¿Estas Seguro?')){
-                    fetch('api/observations/${id}',{
-                        method:'DELETE'
+                    fetch('api/observations/'+id,{
+                        method:'delete'
                     })
                     .then(res=> res.json())
                     .then(data=>{
@@ -51,6 +62,22 @@
                     })
                     .catch(err=> console.log(err));
                 }
+            },
+
+            addObservation(){
+                fetch('api/observations',{
+                    method: 'post',
+                    body: JSON.stringify(this.article),
+                    headers: {
+                        'content-type':'application/json'
+                    }
+                })
+                .then(res=> res.json())
+                .then(data=>{
+                    this.observation.content=''
+                    alert("agregado")
+                })
+                .catch(err=> console.log(err));
             }
         }
     }
