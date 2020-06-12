@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Observation;
 use Illuminate\Http\Request;
 
+
 class ObservationController extends Controller
 {
     /**
@@ -39,13 +40,14 @@ class ObservationController extends Controller
     public function store(Request $request)
     {
         //
+        // ESTO ES LO QUE FALLA
         $observation = new Observation();
-        $observation->name = auth()->name();
-        $observation->content = $request->content;
+        $observation->name = auth()->name(); // ESTO ES LO QUE FALLA
+        $observation->content = $request->input('content');
 
         $observation->save();
 
-        return $observation; // borrar esto despues
+        // return json_encode($observation); // borrar esto despues
     }
 
     /**
@@ -57,10 +59,6 @@ class ObservationController extends Controller
     public function show(Observation $observation)
     {
         //
-        $observation = Observation::findOrFail($request->id);
-        return $observation;
-        //Esta función devolverá los datos de una tarea 
-        // que hayamos seleccionado para cargar el formulario con sus datos
     }
 
     /**
@@ -84,15 +82,7 @@ class ObservationController extends Controller
     public function update(Request $request)
     {
         //
-        $observation = Observation::findOrFail($request->id);
-
-        $observation->name = $request->name;
-        $observation->content = $request->content;
-
-        $observation->save();
-
-        return $observation;
-        //Esta función actualizará la tarea que hayamos seleccionado
+        
     }
 
     /**

@@ -6,7 +6,6 @@
             <div id="app">
                 <observation-component> </observation-component>
             </div>
-            
         </div>
     </div>
 </div>

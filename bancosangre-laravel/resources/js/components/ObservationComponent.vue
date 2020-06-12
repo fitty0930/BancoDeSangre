@@ -1,23 +1,27 @@
 <template>
     <div>
         <div class="card card-header">
-            <h2> observaciones </h2>
+            <h2> observaciones </h2><small> para futuras donaciones </small>
         </div>
         
         <div class="card card-body" v-for="observation in observations" v-bind:key="observation.id">
             <h4> {{observation.name}}</h4>
             <p> {{observation.content}}</p>
-            <button @click="deleteObservation(observation.id)"> Borrar </button>
+            <button class="btn btn-danger btn-block" @click="deleteObservation(observation.id)"> Borrar </button>
         </div>
         <!-- FORMULARIO PARA AGREGAR OBSERVACION -->
         <div class="card card-footer">
             <form @submit.prevent="addObservation">
+                <!-- <div class="form-group">
+                    <input type="text" class="form-control" placeholder="nombre" v-model="observation.name">
+                </div> -->
                 <div class="form-group">
-                    <textarea type="text" class="form-control" placeholder="algun texto" v-model="observation.content">
+                    <textarea type="text" name="content" class="form-control" 
+                    placeholder="algun texto" v-model="observation.content">
 
                     </textarea>
                 </div>
-                <button type="submit"> Agregar observacion </button>
+                <button type="submit" class="btn btn-primary btn-block"> Agregar observacion </button>
             </form>
         </div>
     </div>
@@ -32,7 +36,6 @@
                     id:'',
                     name:'',
                     content:''
-
                 }
             }
         },
@@ -56,15 +59,16 @@
                     fetch(`api/observations/${id}`,{
                         method:'delete'
                     })
-                    .then(res=> res.json())
-                    .then(data=>{
-                        fetchObservations();
+                    .then(()=>{
+                        this.fetchObservations();
+                        
                     })
                     .catch(err=> console.log(err));
                 }
             },
 
             addObservation(){
+                
                 fetch('api/observations',{
                     method: 'post',
                     body: JSON.stringify(this.observation),
@@ -72,9 +76,9 @@
                         'content-type':'application/json'
                     }
                 })
-                .then(res=> res.json())
-                .then(data=>{
+                .then(()=>{
                     this.observation.content=''
+                    this.fetchObservations();
                     alert("agregado")
                 })
                 .catch(err=> console.log(err));

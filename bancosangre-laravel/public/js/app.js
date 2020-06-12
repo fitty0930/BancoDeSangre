@@ -120,6 +120,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -146,20 +150,20 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deleteObservation: function deleteObservation(id) {
+      var _this2 = this;
+
       if (confirm('¿Estas Seguro?')) {
         fetch("api/observations/".concat(id), {
           method: 'delete'
-        }).then(function (res) {
-          return res.json();
-        }).then(function (data) {
-          fetchObservations();
+        }).then(function () {
+          _this2.fetchObservations();
         })["catch"](function (err) {
           return console.log(err);
         });
       }
     },
     addObservation: function addObservation() {
-      var _this2 = this;
+      var _this3 = this;
 
       fetch('api/observations', {
         method: 'post',
@@ -167,10 +171,11 @@ __webpack_require__.r(__webpack_exports__);
         headers: {
           'content-type': 'application/json'
         }
-      }).then(function (res) {
-        return res.json();
-      }).then(function (data) {
-        _this2.observation.content = '';
+      }).then(function () {
+        _this3.observation.content = '';
+
+        _this3.fetchObservations();
+
         alert("agregado");
       })["catch"](function (err) {
         return console.log(err);
@@ -681,6 +686,7 @@ var render = function() {
             _c(
               "button",
               {
+                staticClass: "btn btn-danger btn-block",
                 on: {
                   click: function($event) {
                     return _vm.deleteObservation(observation.id)
@@ -716,7 +722,11 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text", placeholder: "algun texto" },
+                attrs: {
+                  type: "text",
+                  name: "content",
+                  placeholder: "algun texto"
+                },
                 domProps: { value: _vm.observation.content },
                 on: {
                   input: function($event) {
@@ -729,9 +739,14 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("button", { attrs: { type: "submit" } }, [
-              _vm._v(" Agregar observacion ")
-            ])
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-block",
+                attrs: { type: "submit" }
+              },
+              [_vm._v(" Agregar observacion ")]
+            )
           ]
         )
       ])
@@ -745,7 +760,8 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card card-header" }, [
-      _c("h2", [_vm._v(" observaciones ")])
+      _c("h2", [_vm._v(" observaciones ")]),
+      _c("small", [_vm._v(" para futuras donaciones ")])
     ])
   }
 ]
