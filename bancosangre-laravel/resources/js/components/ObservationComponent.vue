@@ -53,12 +53,12 @@
 
             deleteObservation(id){
                 if(confirm('¿Estas Seguro?')){
-                    fetch('api/observations/'+id,{
+                    fetch(`api/observations/${id}`,{
                         method:'delete'
                     })
                     .then(res=> res.json())
                     .then(data=>{
-                        this.fetchObservations();
+                        fetchObservations();
                     })
                     .catch(err=> console.log(err));
                 }
@@ -67,7 +67,7 @@
             addObservation(){
                 fetch('api/observations',{
                     method: 'post',
-                    body: JSON.stringify(this.article),
+                    body: JSON.stringify(this.observation),
                     headers: {
                         'content-type':'application/json'
                     }

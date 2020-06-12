@@ -29,12 +29,13 @@ use App\Role_user;
 // MOSTRAR ROLES
 Route ::get('roles', function(){
     $nombrePagina="roles";
+    $admin=1;
     $users = User::join('role_user', 'users.id', '=', 'role_user.user_id')
                 ->select('users.*', 'role_user.*')
                 // ->OrderBy('dni','asc')
                 ->get();
 
-    return view('roles.allroles', compact('users','nombrePagina'));
+    return view('roles.allroles', compact('users','nombrePagina','admin'));
 })->middleware('auth', 'role:admin')->name('roles');
 
 // EDITADO DE ROL
@@ -51,6 +52,11 @@ Route::get('roles/{id}', function($id){
 })->middleware('auth', 'role:admin')->name('roles.change');
 
 Route::middleware('auth')->group(function(){ // autenticacion
+    Route::get('observations',function(){
+        $nombrePagina = 'Observaciones y avisos';
+        return view('observations.observations', compact('nombrePagina'));
+    })->name('observations');
+
     // route('bloods')
     Route::get('bloodtypes',function(){
         $nombrePagina = 'Tipos de Sangre';
