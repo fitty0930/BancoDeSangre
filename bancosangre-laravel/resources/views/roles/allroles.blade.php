@@ -24,7 +24,7 @@
                             {{$user->name}}
                         </td>
                         <td>
-                            @if (1==$user->role_id)
+                            @if ($admin==$user->role_id)
                                 admin
                             @else
                                 user

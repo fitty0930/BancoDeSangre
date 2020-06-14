@@ -13,7 +13,7 @@ class CreatePatientsTable extends Migration
      */
     public function up()
     {
-    // Schema::enableForeignKeyConstraints();
+    // AGREGAR TELEFONO Y DOMICILIO;
     Schema::create('patients', function (Blueprint $table) {
     $table->increments('patient_id')->unsigned();
     $table->integer('dni');
@@ -38,9 +38,6 @@ class CreatePatientsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('patients');
-        // $table->dropForeign('patients_blood_id_foreign');
-
-        // $table->foreign('blood_id')->references('blood_id')->on('blood');
         
     }
 }

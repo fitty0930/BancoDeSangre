@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('observations', 'ObservationController@index');
+
+Route::post('observations', 'ObservationController@store');
+
+Route::delete('observations/{id}', 'ObservationController@destroy');
+
