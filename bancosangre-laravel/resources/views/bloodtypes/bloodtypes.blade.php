@@ -37,12 +37,15 @@
                                 {{$bloodtype->factor}}
                             </td>
                             <td>
-                            {{-- <a href="{{route('patients.edit', $patient->patient_id)}}" class="btn btn-warning btn-sm"> Editar</a> --}}
+                            @auth
+                            @if(Auth::user()->hasRole('admin'))
                                 <a href="javascript: document.getElementById('delete-{{$bloodtype->blood_id}}').submit()" class="btn btn-danger btn-sm">Eliminar</a>
                                 <form id="delete-{{ $bloodtype->blood_id }}" action="{{ route('bloodtypes.delete', $bloodtype->blood_id) }}" method="POST">
                                     @method('delete')
                                     @csrf 
                                 </form>
+                            @endif
+                            @endauth
                             </td>
                         </tr>
                         @endforeach
