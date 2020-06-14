@@ -20,6 +20,8 @@ class CreatePatientsTable extends Migration
     $table->text('name');
     $table->text('surname');
     $table->integer('age');
+    $table->bigInteger('phone');
+    $table->text('adress');
     $table->unsignedInteger('blood_id');
     $table->foreign('blood_id')
     ->references('blood_id')
