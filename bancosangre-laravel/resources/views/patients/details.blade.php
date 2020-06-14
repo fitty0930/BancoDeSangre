@@ -12,6 +12,8 @@
                         <li class="list-group-item">Nombre: {{$patient->name}}</li>
                         <li class="list-group-item">Apellido: {{$patient->surname}}</li>
                         <li class="list-group-item">Edad: {{$patient->age}}</li>
+                        <li class="list-group-item">Telefono: {{$patient->phone}}</li>
+                        <li class="list-group-item">Dirección: {{$patient->adress}}</li>
                         <li class="list-group-item">Tipo de sangre: {{$patient->group}}{{$patient->factor}}</li>
                         
                     </ul>      

@@ -22,6 +22,12 @@
 
                             <label for="">Edad</label>
                             <input type="number" class="form-control" name="age">
+
+                            <label for="">Telefono</label>
+                            <input type="number" class="form-control" name="phone">
+
+                            <label for="">Direccion</label>
+                            <input type="text" class="form-control" name="adress">
                             <!-- agregar dropdown sangre  -->
                             <label for="">Elija un tipo y factor </label>
                             <div class="input-group">

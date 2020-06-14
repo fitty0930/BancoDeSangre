@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function(){ // autenticacion
     $newPatient->name = $request->input('name');
     $newPatient->surname = $request->input('surname');
     $newPatient->age = $request->input('age');
+    $newPatient->phone = $request->input('phone');
+    $newPatient->adress = $request->input('adress');
     $newPatient->blood_id = $request->input('blood_id');; // sobreescrito para probar
     $newPatient->save();
 
