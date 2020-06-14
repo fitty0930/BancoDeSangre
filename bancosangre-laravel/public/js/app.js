@@ -124,15 +124,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['user', 'userrole'],
   data: function data() {
     return {
       observations: [],
       observation: {
         id: '',
-        name: '',
+        name: this.user.name,
         content: ''
-      }
+      },
+      admin: this.userrole
     };
   },
   created: function created() {
@@ -683,18 +690,22 @@ var render = function() {
             _vm._v(" "),
             _c("p", [_vm._v(" " + _vm._s(observation.content))]),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-danger btn-block",
-                on: {
-                  click: function($event) {
-                    return _vm.deleteObservation(observation.id)
-                  }
-                }
-              },
-              [_vm._v(" Borrar ")]
-            )
+            _vm.admin
+              ? _c("div", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-block",
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteObservation(observation.id)
+                        }
+                      }
+                    },
+                    [_vm._v(" Borrar ")]
+                  )
+                ])
+              : _vm._e()
           ]
         )
       }),
@@ -711,6 +722,36 @@ var render = function() {
             }
           },
           [
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.observation.name,
+                    expression: "observation.name"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  placeholder: "",
+                  value: "",
+                  name: "name",
+                  readonly: ""
+                },
+                domProps: { value: _vm.observation.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.observation, "name", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
               _c("textarea", {
                 directives: [
@@ -760,7 +801,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card card-header" }, [
-      _c("h2", [_vm._v(" observaciones ")]),
+      _c("h2", [_vm._v(" Observaciones ")]),
       _c("small", [_vm._v(" para futuras donaciones ")])
     ])
   }

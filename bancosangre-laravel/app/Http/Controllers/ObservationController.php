@@ -42,7 +42,7 @@ class ObservationController extends Controller
         //
         // ESTO ES LO QUE FALLA
         $observation = new Observation();
-        $observation->name = auth()->name(); // ESTO ES LO QUE FALLA
+        $observation->name = $request->input('name'); // ESTO ES LO QUE FALLA
         $observation->content = $request->input('content');
 
         $observation->save();

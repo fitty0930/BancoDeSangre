@@ -1,24 +1,29 @@
 <template>
     <div>
         <div class="card card-header">
-            <h2> observaciones </h2><small> para futuras donaciones </small>
+            <h2> Observaciones </h2><small> para futuras donaciones </small>
         </div>
         
         <div class="card card-body" v-for="observation in observations" v-bind:key="observation.id">
             <h4> {{observation.name}}</h4>
             <p> {{observation.content}}</p>
-            <button class="btn btn-danger btn-block" @click="deleteObservation(observation.id)"> Borrar </button>
+            <div v-if="admin">
+                 <button class="btn btn-danger btn-block" @click="deleteObservation(observation.id)"> Borrar </button>
+            </div>
         </div>
         <!-- FORMULARIO PARA AGREGAR OBSERVACION -->
+        <!-- FORM TO ADD OBSERVATION  -->
         <div class="card card-footer">
             <form @submit.prevent="addObservation">
-                <!-- <div class="form-group">
-                    <input type="text" class="form-control" placeholder="nombre" v-model="observation.name">
-                </div> -->
+
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="" 
+                    v-model="observation.name" value="" name="name" readonly>
+                </div>
+
                 <div class="form-group">
                     <textarea type="text" name="content" class="form-control" 
                     placeholder="algun texto" v-model="observation.content">
-
                     </textarea>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block"> Agregar observacion </button>
@@ -29,14 +34,16 @@
 
 <script>
     export default{
+        props : ['user','userrole'],
         data(){
             return{
                 observations:[],
                 observation:{
                     id:'',
-                    name:'',
+                    name:this.user.name,
                     content:''
-                }
+                },
+                admin: this.userrole
             }
         },
 
