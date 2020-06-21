@@ -23,6 +23,12 @@
 
                             <label for="">Edad</label>
                             <input type="number" value="{{$patient->age}}" class="form-control" name="age">
+
+                            <label for="">Telefono</label>
+                            <input type="number" class="form-control"  value="{{$patient->phone}}" name="phone">
+
+                            <label for="">Direccion</label>
+                            <input type="text" class="form-control" value="{{$patient->adress}}" name="adress">
                             <!-- agregar dropdown sangre  -->
                             <label for="">Elija un tipo y factor </label>
                             <div class="input-group">
