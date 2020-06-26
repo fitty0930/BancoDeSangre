@@ -15,6 +15,7 @@
                             {{session('info')}}
                         </div>
                     @endif
+                    <input id="buscar" type="text" class="form-control" placeholder="Escriba algo para filtrar" />
                 <table class="table table-hover table-sm">
                     <thead>
                         <th>
@@ -40,7 +41,7 @@
                         </th>
                         {{-- completar --}}
                     </thead>
-                    <tbody>
+                    <tbody id="pacientes-tabla">
                         @foreach($patients as $patient)
                         <tr>
                             <td>
@@ -83,4 +84,5 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('js/search.js')}}"></script>
 @endsection

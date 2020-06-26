@@ -11,6 +11,7 @@
     {{-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> --}}
     {{-- axios --}}
     {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+    <link rel="stylesheet" href="{{asset('css/search.css')}}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
