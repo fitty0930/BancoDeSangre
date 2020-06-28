@@ -165,6 +165,8 @@ Route::put('patients/{patient_id}', function(Request $request, $patient_id){
     $patient->name = $request->input('name');
     $patient->surname = $request->input('surname');
     $patient->age = $request->input('age');
+    $patient->phone=$request->input('phone');
+    $patient->adress=$request->input('adress');
     $patient->blood_id = $request->input('blood_id');
     $patient->save();
 
