@@ -26,3 +26,11 @@ Guía de instalación:
 5) Y finalmente 
 
   php artisan migrate:refresh –seed
+  
+Para desarrolladores:
+Se propone una arquitectura MVC que cuenta con 6 models, de los cuales Patient y Bloodtype estan estadarizados mientras que Observation, Role, Role_user y User se encuentran personalizados.
+Se utiliza Laravel 7 en este proyecto, que requiere a su vez composer y node.js para el render de las observaciones.
+
+* El proyecto se encuentra documentado en cada sección.
+
+Cualquier duda contactar martinaguirre08@gmail.com
