@@ -15,11 +15,14 @@ Guía de instalación:
 
 3) Ejecute los comandos:
   
-  composer require laravel/ui 
+  composer require laravel/ui
+ 
   php artisan make:auth
 
 4) Posteriormente ejecute 
+
   composer dump-autoload
 
 5) Y finalmente 
+
   php artisan migrate:refresh –seed
