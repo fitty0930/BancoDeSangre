@@ -5,7 +5,11 @@
             <div class="col-md-12">
                 <div class="card-header">
                     Sangre
-                    <a href="{{route('bloodtypes.new')}}" class="btn btn-success btn-sm float-right"> Nuevo </a>
+                    @auth
+                        @if(Auth::user()->hasRole('admin'))
+                            <a href="{{route('bloodtypes.new')}}" class="btn btn-success btn-sm float-right"> Nuevo </a>
+                        @endif
+                    @endauth
                 </div>
                 <div class="card-body">
                     @if(session('info'))
