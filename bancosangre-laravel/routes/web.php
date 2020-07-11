@@ -10,6 +10,7 @@ use App\Bloodtype;
 use App\User;
 use App\Role;
 use App\Role_user;
+use App\Donation;
 
 
 /*
@@ -86,8 +87,29 @@ Route::middleware('auth')->group(function(){ // autenticacion
     // redirecciona, routea y manda un array de informacion
     })->name('patients.store');
 
-    
+    // EFECTUAR UNA DONACION DE SANGRE
+    Route ::post('patients/donate/{patient_id}', function($patient_id){
+        $patient =  Patient::findOrFail($patient_id);
+        
+        $newDonator= new Donation;
+        $newDonator->dni=$patient->dni;
+        $newDonator->surname= $patient->surname;
+        $newDonator->name= $patient->name;
+        $newDonator->age=$patient->age;
+        $newDonator->save();
+
+        return redirect()->route('patients')->with('info','Donacion exitosa');
+    })->name('patients.donate');
 });
+
+// MOSTRADO DE TODAS LAS DONACIONES
+Route ::get('donations', function(){
+    $nombrePagina= 'Pacientes';
+    $donations = Donation::get();
+
+    return view('donations.donations', compact('donations','nombrePagina'));
+})->name('donations'); // le da un nombre a la ruta
+
 
 // MOSTRADO DE FORMULARIO PARA CREAR TIPO DE SANGRE
 Route ::get('bloodtypes/new', function(){
