@@ -137,7 +137,7 @@ Route ::delete('patients/{patient_id}', function($patient_id){
 
     return redirect()->route('patients')->with('info','Paciente eliminado exitosamente');
     // redirecciona, routea y manda un array de informacion
-})->name('patients.delete');
+})->middleware('auth', 'role:admin')->name('patients.delete');
 
 
 // MOSTRADO DE FORMULARIO DE EDICION
@@ -150,7 +150,7 @@ Route ::get('patients/{patient_id}/edit', function($patient_id){
     // first retorna un solo obj , vendria a ser el equivalente al get()
 
     return view('patients.edit', compact('patient','nombrePagina'));// va entre comillas y sin $
-})->name('patients.edit');
+})->middleware('auth', 'role:admin')->name('patients.edit');
 
 
 // EDITADO DE PACIENTE
@@ -171,7 +171,7 @@ Route::put('patients/{patient_id}', function(Request $request, $patient_id){
     $patient->save();
 
     return redirect()->route('patients')->with('info','Paciente editado exitosamente');
-})->name('patients.update');
+})->middleware('auth', 'role:admin')->name('patients.update');
 
 // DETALLES DE UN SOLO PACIENTE
 Route::get('patients/{patient_id}', function($patient_id){
@@ -193,7 +193,7 @@ Route ::delete('bloodtypes/{blood_id}', function($blood_id){
 
     return redirect()->route('bloodtypes')->with('info','Tipo de sangre eliminado exitosamente');
     // redirecciona, routea y manda un array de informacion
-})->name('bloodtypes.delete');
+})->middleware('auth', 'role:admin')->name('bloodtypes.delete');
 
 // FILTRADO DE PACIENTES POR TIPO DE SANGRE (COMPATIBILIDAD)
 Route::get('bloodtypes/{blood_id}/compatibility', function($blood_id){
