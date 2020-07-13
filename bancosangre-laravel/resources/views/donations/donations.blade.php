@@ -17,6 +17,9 @@
                         <th>
                             Apellido
                         </th>
+                        <th> 
+                            Fecha 
+                        </th>
                         {{-- completar --}}
                     </thead>
                     <tbody>
@@ -30,6 +33,9 @@
                             </td>
                             <td>
                                 {{$donation->surname}}
+                            </td>
+                            <td>
+                                {{$donation->created_at}}
                             </td>
                         </tr>
                         @endforeach

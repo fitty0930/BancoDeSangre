@@ -65,27 +65,10 @@ Route::middleware('auth')->group(function(){ // autenticacion
     })->name('bloodtypes');
     
     // MOSTRADO DE FORMULARIO PARA CREAR PACIENTE
-    Route ::get('patients/new', function(){
-    $nombrePagina= 'Nuevo Paciente';
-    
-    return view('patients.new', compact('nombrePagina'));
-    })->name('patients.new');
+    Route ::get('patients/new', 'PatientController@showNewForm')->name('patients.new');
 
     //CREADO DE PACIENTES
-    Route ::post('patients', function(Request $request){ // trae en un array toda la informacion del formulario
-    $newPatient = new Patient;
-    $newPatient->dni = $request->input('dni');
-    $newPatient->name = $request->input('name');
-    $newPatient->surname = $request->input('surname');
-    $newPatient->age = $request->input('age');
-    $newPatient->phone = $request->input('phone');
-    $newPatient->adress = $request->input('adress');
-    $newPatient->blood_id = $request->input('blood_id');; // sobreescrito para probar
-    $newPatient->save();
-
-    return redirect()->route('patients')->with('info','Paciente agregado exitosamente');
-    // redirecciona, routea y manda un array de informacion
-    })->name('patients.store');
+    Route ::post('patients', 'PatientController@newPatient')->name('patients.store');
 
     // EFECTUAR UNA DONACION DE SANGRE
     Route ::post('patients/donate/{patient_id}', function($patient_id){
@@ -140,72 +123,27 @@ Route ::get('/', function(){
 });
 
 // MOSTRADO DE TODOS LOS PACIENTES
-Route ::get('patients', function(){
-    $nombrePagina= 'Pacientes';
-    $patients = Patient::join('bloodtypes', 'patients.blood_id', '=', 'bloodtypes.blood_id')
-                ->select('patients.*', 'bloodtypes.group', 'bloodtypes.factor')
-                ->OrderBy('dni','asc')
-                ->get();
-
-    return view('patients.patients', compact('patients','nombrePagina'));
-})->name('patients'); // le da un nombre a la ruta
+Route ::get('patients', 'PatientController@getPatients')
+->name('patients'); // le da un nombre a la ruta
 
 
 // BORRADO DE PACIENTES
-Route ::delete('patients/{patient_id}', function($patient_id){
-    $patient = Patient::findOrFail($patient_id); // por alguna razon no me deja usar findorfail
-    $patient->delete();
-    // primero se busca y despues se ejecutan ordenes
-
-    return redirect()->route('patients')->with('info','Paciente eliminado exitosamente');
-    // redirecciona, routea y manda un array de informacion
-})->middleware('auth', 'role:admin')->name('patients.delete');
+Route ::delete('patients/{patient_id}', 'PatientController@deletePatient')
+->middleware('auth', 'role:admin')->name('patients.delete');
 
 
 // MOSTRADO DE FORMULARIO DE EDICION
-Route ::get('patients/{patient_id}/edit', function($patient_id){
-    $nombrePagina= 'Editar Paciente';
-    $patient =  Patient::join('bloodtypes', 'patients.blood_id', '=', 'bloodtypes.blood_id')
-                ->select('patients.*', 'bloodtypes.group', 'bloodtypes.factor')
-                ->OrderBy('dni','asc')
-                ->findOrFail($patient_id);
-    // first retorna un solo obj , vendria a ser el equivalente al get()
-
-    return view('patients.edit', compact('patient','nombrePagina'));// va entre comillas y sin $
-})->middleware('auth', 'role:admin')->name('patients.edit');
+Route ::get('patients/{patient_id}/edit', 'PatientController@showEditForm')
+->middleware('auth', 'role:admin')->name('patients.edit');
 
 
 // EDITADO DE PACIENTE
-Route::put('patients/{patient_id}', function(Request $request, $patient_id){
-
-    $patient =  Patient::join('bloodtypes', 'patients.blood_id', '=', 'bloodtypes.blood_id')
-                ->select('patients.*', 'bloodtypes.group', 'bloodtypes.factor')
-                ->OrderBy('dni','asc')
-                ->findOrFail($patient_id);
-
-    $patient->dni = $request->input('dni');
-    $patient->name = $request->input('name');
-    $patient->surname = $request->input('surname');
-    $patient->age = $request->input('age');
-    $patient->phone=$request->input('phone');
-    $patient->adress=$request->input('adress');
-    $patient->blood_id = $request->input('blood_id');
-    $patient->save();
-
-    return redirect()->route('patients')->with('info','Paciente editado exitosamente');
-})->middleware('auth', 'role:admin')->name('patients.update');
+Route::put('patients/{patient_id}', 'PatientController@editPatient')
+->middleware('auth', 'role:admin')->name('patients.update');
 
 // DETALLES DE UN SOLO PACIENTE
-Route::get('patients/{patient_id}', function($patient_id){
-    
-    $patient =  Patient::join('bloodtypes', 'patients.blood_id', '=', 'bloodtypes.blood_id')
-                ->select('patients.*', 'bloodtypes.group', 'bloodtypes.factor')
-                ->OrderBy('dni','asc')
-                ->findOrFail($patient_id);
-    $nombrePagina= $patient->name." ".$patient->surname;
-
-    return view('patients.details', compact('patient','nombrePagina'));
-})->name('patients.details');
+Route::get('patients/{patient_id}','PatientController@getPatient')
+->name('patients.details');
 
 // BORRADO DE TIPO DE SANGRE
 Route ::delete('bloodtypes/{blood_id}', function($blood_id){
