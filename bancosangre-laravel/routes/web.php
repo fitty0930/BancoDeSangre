@@ -5,11 +5,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
-use App\Patient;
 use App\Bloodtype;
-use App\User;
-use App\Role;
-use App\Role_user;
 use App\Donation;
 
 
@@ -28,29 +24,11 @@ use App\Donation;
 
 
 // MOSTRAR ROLES
-Route ::get('roles', function(){
-    $nombrePagina="roles";
-    $admin=1;
-    $users = User::join('role_user', 'users.id', '=', 'role_user.user_id')
-                ->select('users.*', 'role_user.*')
-                // ->OrderBy('dni','asc')
-                ->get();
-
-    return view('roles.allroles', compact('users','nombrePagina','admin'));
-})->middleware('auth', 'role:admin')->name('roles');
+Route ::get('roles', 'RolesController@showRoles')
+->middleware('auth', 'role:admin')->name('roles');
 
 // EDITADO DE ROL
-Route::get('roles/{id}', function($id){
-    $role_user =  Role_user::select('role_user.*')->where('role_user.user_id', $id)->first();
-    if($role_user->role_id==1){
-        $role_user->role_id= 2;
-        $role_user->save();
-    }else if($role_user->role_id==2){
-        $role_user->role_id= 1;
-        $role_user->save();
-    }
-    return redirect()->route('roles');
-})->middleware('auth', 'role:admin')->name('roles.change');
+Route::get('roles/{id}', 'RolesController@changeRole')->middleware('auth', 'role:admin')->name('roles.change');
 
 Route::middleware('auth')->group(function(){ // autenticacion
     Route::get('observations',function(){
@@ -59,10 +37,7 @@ Route::middleware('auth')->group(function(){ // autenticacion
     })->name('observations');
 
     // route('bloods')
-    Route::get('bloodtypes',function(){
-        $nombrePagina = 'Tipos de Sangre';
-        return view('bloodtypes.bloodtypes', compact('nombrePagina'));
-    })->name('bloodtypes');
+    Route::get('bloodtypes','BloodtypeController@getBloodtypes')->name('bloodtypes');
     
     // MOSTRADO DE FORMULARIO PARA CREAR PACIENTE
     Route ::get('patients/new', 'PatientController@showNewForm')->name('patients.new');
@@ -71,45 +46,20 @@ Route::middleware('auth')->group(function(){ // autenticacion
     Route ::post('patients', 'PatientController@newPatient')->name('patients.store');
 
     // EFECTUAR UNA DONACION DE SANGRE
-    Route ::post('patients/donate/{patient_id}', function($patient_id){
-        $patient =  Patient::findOrFail($patient_id);
-        
-        $newDonator= new Donation;
-        $newDonator->dni=$patient->dni;
-        $newDonator->surname= $patient->surname;
-        $newDonator->name= $patient->name;
-        $newDonator->age=$patient->age;
-        $newDonator->save();
-
-        return redirect()->route('patients')->with('info','Donacion exitosa');
-    })->name('patients.donate');
+    Route ::post('patients/donate/{patient_id}', 'DonationController@patientDonate')->name('patients.donate');
 });
 
 // MOSTRADO DE TODAS LAS DONACIONES
-Route ::get('donations', function(){
-    $nombrePagina= 'Pacientes';
-    $donations = Donation::get();
-
-    return view('donations.donations', compact('donations','nombrePagina'));
-})->name('donations'); // le da un nombre a la ruta
+Route ::get('donations', 'DonationController@getDonations')->name('donations'); // le da un nombre a la ruta
 
 
 // MOSTRADO DE FORMULARIO PARA CREAR TIPO DE SANGRE
-Route ::get('bloodtypes/new', function(){
-    $nombrePagina= 'Nuevo tipo de sangre';
-    return view('bloodtypes.new', compact('nombrePagina'));
-})->middleware('auth', 'role:admin')->name('bloodtypes.new');
+Route ::get('bloodtypes/new', 'BloodtypeController@showNewForm')
+->middleware('auth', 'role:admin')->name('bloodtypes.new');
 
 //CREADO DE TIPO DE SANGRE
-Route ::post('bloodtypes', function(Request $request){ // trae en un array toda la informacion del formulario
-    $newBlood = new Bloodtype;
-    $newBlood->group = $request->input('group');
-    $newBlood->factor = $request->input('factor');
-    $newBlood->save();
-
-    return redirect()->route('bloodtypes')->with('info','Tipo de sangre agregado exitosamente');
-    // redirecciona, routea y manda un array de informacion
-})->middleware('auth', 'role:admin')->name('bloodtypes.store');
+Route ::post('bloodtypes', 'BloodtypeController@newBloodtype')
+->middleware('auth', 'role:admin')->name('bloodtypes.store');
 
 // RUTA DE ERROR
 Route ::get('error', function(){
@@ -146,27 +96,12 @@ Route::get('patients/{patient_id}','PatientController@getPatient')
 ->name('patients.details');
 
 // BORRADO DE TIPO DE SANGRE
-Route ::delete('bloodtypes/{blood_id}', function($blood_id){
-    $blood = Bloodtype::findOrFail($blood_id); // por alguna razon no me deja usar findorfail
-    $blood->delete();
-    // primero se busca y despues se ejecutan ordenes
-
-    return redirect()->route('bloodtypes')->with('info','Tipo de sangre eliminado exitosamente');
-    // redirecciona, routea y manda un array de informacion
-})->middleware('auth', 'role:admin')->name('bloodtypes.delete');
+Route ::delete('bloodtypes/{blood_id}', 'BloodtypeController@deleteBloodtype')
+->middleware('auth', 'role:admin')->name('bloodtypes.delete');
 
 // FILTRADO DE PACIENTES POR TIPO DE SANGRE (COMPATIBILIDAD)
-Route::get('bloodtypes/{blood_id}/compatibility', function($blood_id){
-    $nombrePagina= 'Pacientes compatibles';
-
-    $patients = Patient::join('bloodtypes', 'patients.blood_id', '=', 'bloodtypes.blood_id')
-                ->select('patients.*', 'bloodtypes.*')
-                ->OrderBy('dni','asc')
-                ->where('patients.blood_id', $blood_id) // hay que especificar sino se rompe
-                ->get();
-                
-    return view('bloodtypes.compatiblepatients', compact('patients','nombrePagina'));
-})->name('bloodtypes.compatiblepatients');
+Route::get('bloodtypes/{blood_id}/compatibility', 'BloodtypeController@bloodCompatibility')
+->name('bloodtypes.compatiblepatients');
 
 // VIEW COMPOSER
 // SIRVE PARA PASAR INFORMACION A TODAS LAS VISTAS
