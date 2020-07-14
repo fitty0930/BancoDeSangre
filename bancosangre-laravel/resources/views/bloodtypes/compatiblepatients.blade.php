@@ -17,6 +17,11 @@
                     @endif
                 <table class="table table-hover table-sm">
                     <thead>
+                        @auth
+                        <th>
+                            Donar
+                        </th>
+                        @endauth
                         <th>
                             DNI
                         </th>
@@ -42,6 +47,14 @@
                     <tbody>
                         @foreach($patients as $patient)
                         <tr>
+                            @auth
+                            <td>
+                                <a href="javascript: document.getElementById('donate-{{$patient->patient_id}}').submit()" class="btn btn-success btn-sm">Donar</a>
+                                <form id="donate-{{ $patient->patient_id }}" action="{{route('patients.donate', $patient->patient_id)}}" method="POST">
+                                    @csrf 
+                                </form>
+                            </td>
+                            @endauth
                             <td>
                                 {{$patient->dni}}
                             </td>

@@ -18,6 +18,11 @@
                     <input id="buscar" type="text" class="form-control" placeholder="Escriba algo para filtrar" />
                 <table class="table table-hover table-sm">
                     <thead>
+                        @auth
+                        <th>
+                            Donar
+                        </th>
+                        @endauth
                         <th>
                             DNI
                         </th>
@@ -44,6 +49,15 @@
                     <tbody id="pacientes-tabla">
                         @foreach($patients as $patient)
                         <tr>
+                            @auth
+                            <td>
+                                <a href="javascript: document.getElementById('donate-{{$patient->patient_id}}').submit()" class="btn btn-success btn-sm">Donar</a>
+                                <form id="donate-{{ $patient->patient_id }}" action="{{route('patients.donate', $patient->patient_id)}}" method="POST">
+                                    
+                                    @csrf 
+                                </form>
+                            </td>
+                            @endauth
                             <td>
                                 {{$patient->dni}}
                             </td>
@@ -68,12 +82,14 @@
                             @auth
                                 @if(Auth::user()->hasRole('admin'))
                                 <a href="{{route('patients.edit', $patient->patient_id)}}" class="btn btn-warning btn-sm"> Editar</a>
+
                                 <a href="javascript: document.getElementById('delete-{{$patient->patient_id}}').submit()" class="btn btn-danger btn-sm">Eliminar</a>
                                 <form id="delete-{{ $patient->patient_id }}" action="{{ route('patients.delete', $patient->patient_id) }}" method="POST">
                                     @method('delete')
                                     @csrf 
                                 </form>
                                 @endif
+                                
                             @endauth
                             </td>
                         </tr>

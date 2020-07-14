@@ -10,6 +10,8 @@
                     <form action="{{route('bloodtypes.store')}}" method="POST">
                     @csrf
                     <!-- dni, name, surname, blood_id (dropdown) -->
+                    <div class="alert alert-info"> Completa los campos antes de proseguir </div>
+                    
                         <div class="form-group">
                             <label for=""> Grupo </label>
                             <input type="text" class="form-control" name="group">

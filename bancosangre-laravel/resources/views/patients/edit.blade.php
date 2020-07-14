@@ -11,6 +11,7 @@
                     @method('put')
                     @csrf
                     <!-- dni, name, surname, blood_id (dropdown) -->
+                    <div class="alert alert-info"> Completa los campos antes de proseguir </div>
                         <div class="form-group">
                             <label for=""> DNI </label>
                             <input type="number" value="{{$patient->dni}}" class="form-control" name="dni">
