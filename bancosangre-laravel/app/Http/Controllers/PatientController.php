@@ -44,6 +44,21 @@ class PatientController extends Controller
     }
 
     public function newPatient(Request $request){ // trae en un array toda la informacion del formulario
+        $validatedData = $request->validate([
+            'dni' => 'required',
+            'name' => 'required',
+            'surname' => 'required',
+            'age' => 'required',
+            'phone' => 'required',
+            'adress' => 'required',
+            'blood_id' => 'required',
+        ]);
+
+        if($validatedData->fails()){
+            $errors = $validator->errors();
+            return $errors;
+        }
+        
         $newPatient = new Patient;
         $newPatient->dni = $request->input('dni');
         $newPatient->name = $request->input('name');
@@ -74,6 +89,16 @@ class PatientController extends Controller
                 ->select('patients.*', 'bloodtypes.group', 'bloodtypes.factor')
                 ->OrderBy('dni','asc')
                 ->findOrFail($patient_id);
+        
+        $validatedData = $request->validate([
+            'dni' => 'required',
+            'name' => 'required',
+            'surname' => 'required',
+            'age' => 'required',
+            'phone' => 'required',
+            'adress' => 'required',
+            'blood_id' => 'required',
+        ]);        
 
         $patient->dni = $request->input('dni');
         $patient->name = $request->input('name');
@@ -82,6 +107,7 @@ class PatientController extends Controller
         $patient->phone=$request->input('phone');
         $patient->adress=$request->input('adress');
         $patient->blood_id = $request->input('blood_id');
+        
         $patient->save();
 
         return redirect()->route('patients')->with('info','Paciente editado exitosamente');

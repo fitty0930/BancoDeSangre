@@ -9,6 +9,7 @@
                 <div class="card-body">
                     <form action="{{route('patients.store')}}" method="POST">
                     @csrf
+                    <div class="alert alert-info"> Completa los campos antes de proseguir </div>
                     <!-- dni, name, surname, blood_id (dropdown) -->
                         <div class="form-group">
                             <label for=""> DNI </label>

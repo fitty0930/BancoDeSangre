@@ -35,7 +35,8 @@
                                 {{$donation->surname}}
                             </td>
                             <td>
-                                {{$donation->created_at}}
+                                {{$donation->created_at->format('d-M-Y, H:i')}}
+                                                        {{-- DIA-MES-AÑO, HORAS, MINUTOS --}}
                             </td>
                         </tr>
                         @endforeach

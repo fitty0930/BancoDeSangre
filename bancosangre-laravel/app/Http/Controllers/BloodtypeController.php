@@ -20,6 +20,11 @@ class BloodtypeController extends Controller
     }
 
     public function newBloodtype(Request $request){ // trae en un array toda la informacion del formulario
+        $validatedData = $request->validate([
+            'group' => 'required',
+            'factor' => 'required'
+        ]);
+        
         $newBlood = new Bloodtype;
         $newBlood->group = $request->input('group');
         $newBlood->factor = $request->input('factor');
