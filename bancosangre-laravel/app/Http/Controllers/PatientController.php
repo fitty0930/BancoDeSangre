@@ -54,10 +54,6 @@ class PatientController extends Controller
             'blood_id' => 'required',
         ]);
 
-        if($validatedData->fails()){
-            $errors = $validator->errors();
-            return $errors;
-        }
         
         $newPatient = new Patient;
         $newPatient->dni = $request->input('dni');
