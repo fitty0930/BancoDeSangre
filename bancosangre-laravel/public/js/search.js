@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     
     "use strict";
-    let cuerpoTabla = document.querySelector("#pacientes-tabla");
+    
     let textbuscar = document.getElementById("buscar");
     textbuscar.onkeyup = function () {
     buscar();

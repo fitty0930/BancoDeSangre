@@ -11,7 +11,7 @@ class DonationController extends Controller
     //
     public function getDonations(){
         $nombrePagina= 'Pacientes';
-        $donations = Donation::get();
+        $donations = Donation::OrderBy('created_at','desc')->get();
     
         return view('donations.donations', compact('donations','nombrePagina'));
     }
