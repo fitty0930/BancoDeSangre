@@ -10,10 +10,9 @@ class Bloodtype extends Model
     protected $primaryKey = 'blood_id'; 
     
     // something tstdfadshfia
+    
+
     /**
-     * fdasjhfodjasofa
-     * afdksjfoiadsfa
-     * fjsdofjasdfa
-     * fdisjafoasdf
+     * fdasfoiadsf
      */
 }
