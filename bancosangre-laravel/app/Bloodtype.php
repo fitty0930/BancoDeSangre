@@ -14,5 +14,10 @@ class Bloodtype extends Model
 
     /**
      * fdasfoiadsf
+     * }fadsfjodasjofidjas
+     * 
+     * fasdjifijdfa
+     * fdjasifjdoas
+     * 
      */
 }
